@@ -2,7 +2,7 @@ blueprint:
   name: Adaptive Lighting Based on Motion, Lux, and Presence
   description: Turn on lights based on motion, presence, and lux sensor input. Turn off lights after inactivity.
   domain: automation
-  source: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/lighting/adaptive-lighting.yaml
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/lighting/adaptive-lighting.yaml
   author: AutoHome
   input:
     motion_sensor:

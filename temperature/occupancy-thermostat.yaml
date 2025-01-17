@@ -2,7 +2,7 @@ blueprint:
   name: Thermostat Adjustment Based on Room Occupancy
   description: Adjust thermostat settings based on room occupancy detected by motion, presence, and door sensors.
   domain: automation
-  source: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/temperature/occupancy-thermostat.yaml
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/temperature/occupancy-thermostat.yaml
   author: AutoHome
   input:
     motion_sensor:
