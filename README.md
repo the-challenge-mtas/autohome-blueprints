@@ -18,7 +18,7 @@ The blueprints are organized by the type of device they control:
 
 ### Adaptive Lighting Based on Motion, Lux, and Presence
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fraw%2Frefs%2Fheads%2Fmaster%2Flighting%2Fadaptive-lighting.yaml)
 
 **Trigger:**
 
@@ -38,7 +38,7 @@ The blueprints are organized by the type of device they control:
 
 ### Thermostat Adjustment Based on Room Occupancy
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fraw%2Frefs%2Fheads%2Fmaster%2Ftemperature%2Foccupancy-thermostat.yaml)
 
 **Trigger:**
 
