@@ -1,0 +1,66 @@
+blueprint:
+  name: Thermostat Adjustment Based on Room Occupancy
+  description: Adjust thermostat settings based on room occupancy detected by motion, presence, and door sensors.
+  domain: automation
+  input:
+    motion_sensor:
+      name: PIR Motion Sensor
+      description: The motion sensor to detect occupancy.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+    presence_sensor:
+      name: mmWave Presence Sensor
+      description: The presence sensor to detect fine movements.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: presence
+    door_sensor:
+      name: Door Sensor
+      description: The door sensor to detect if the door is open or closed.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: door
+    thermostat:
+      name: Thermostat to Control
+      description: The thermostat to adjust.
+      selector:
+        entity:
+          domain: climate
+    temperature_threshold:
+      name: Temperature Threshold
+      description: Adjust the thermostat if the temperature is below this value.
+      default: 21
+      selector:
+        number:
+          min: 10
+          max: 30
+          step: 0.5
+          unit_of_measurement: °C
+
+trigger:
+  - platform: state
+    entity_id: !input door_sensor
+    to: "on"
+  - platform: state
+    entity_id: !input motion_sensor
+    to: "on"
+  - platform: state
+    entity_id: !input presence_sensor
+    to: "on"
+
+condition:
+  - condition: numeric_state
+    entity_id: !input thermostat
+    attribute: current_temperature
+    below: !input temperature_threshold
+
+action:
+  - service: climate.set_temperature
+    target:
+      entity_id: !input thermostat
+    data:
+      temperature: !input temperature_threshold

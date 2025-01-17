@@ -1,0 +1,63 @@
+blueprint:
+  name: Pause Music When Room is Empty
+  description: Pause music if no one is detected in the room using motion and presence sensors.
+  domain: automation
+  input:
+    motion_sensor:
+      name: PIR Motion Sensor
+      description: The motion sensor to detect occupancy.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: occupancy
+    presence_sensor:
+      name: mmWave Presence Sensor
+      description: The presence sensor to detect fine movements.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: presence
+    media_player:
+      name: Media Player
+      description: The media player to control.
+      selector:
+        entity:
+          domain: media_player
+    inactivity_duration:
+      name: Inactivity Duration
+      description: Time in minutes to wait after no one is detected before pausing music.
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 30
+          step: 1
+          unit_of_measurement: min
+
+trigger:
+  - platform: state
+    entity_id: !input motion_sensor
+    to: "off"
+  - platform: state
+    entity_id: !input presence_sensor
+    to: "off"
+
+condition: []
+
+action:
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input motion_sensor
+        to: "on"
+      - platform: state
+        entity_id: !input presence_sensor
+        to: "on"
+    timeout:
+      minutes: !input inactivity_duration
+    continue_on_timeout: true
+  - condition: template
+    value_template: >
+      {{ not is_state('!input.motion_sensor', 'on') and not is_state('!input.presence_sensor', 'on') }}
+  - service: media_player.media_pause
+    target:
+      entity_id: !input media_player

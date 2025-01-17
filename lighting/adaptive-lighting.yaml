@@ -1,0 +1,83 @@
+blueprint:
+  name: Adaptive Lighting Based on Motion, Lux, and Presence
+  description: Turn on lights based on motion, presence, and lux sensor input. Turn off lights after inactivity.
+  domain: automation
+  input:
+    motion_sensor:
+      name: PIR Motion Sensor
+      description: The motion sensor to detect occupancy.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+    presence_sensor:
+      name: mmWave Presence Sensor
+      description: The presence sensor to detect fine movements.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: presence
+    lux_sensor:
+      name: Lux Sensor
+      description: The lux sensor to measure light levels.
+      selector:
+        entity:
+          domain: sensor
+    light:
+      name: Light to Control
+      description: The light to turn on/off.
+      selector:
+        entity:
+          domain: light
+    lux_threshold:
+      name: Lux Threshold
+      description: The maximum lux level to consider it "dark."
+      default: 50
+      selector:
+        number:
+          min: 0
+          max: 1000
+          step: 1
+          unit_of_measurement: lx
+    inactivity_duration:
+      name: Inactivity Duration
+      description: Time in minutes to wait before turning off the light.
+      default: 15
+      selector:
+        number:
+          min: 1
+          max: 60
+          step: 1
+          unit_of_measurement: min
+
+trigger:
+  - platform: state
+    entity_id: !input motion_sensor
+    to: "on"
+  - platform: state
+    entity_id: !input presence_sensor
+    to: "on"
+
+condition:
+  - condition: numeric_state
+    entity_id: !input lux_sensor
+    below: !input lux_threshold
+
+action:
+  - service: light.turn_on
+    target:
+      entity_id: !input light
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input motion_sensor
+        to: "off"
+        for:
+          minutes: !input inactivity_duration
+      - platform: state
+        entity_id: !input presence_sensor
+        to: "off"
+        for:
+          minutes: !input inactivity_duration
+  - service: light.turn_off
+    target:
+      entity_id: !input light
