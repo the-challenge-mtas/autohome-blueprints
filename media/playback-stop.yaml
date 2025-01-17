@@ -2,6 +2,7 @@ blueprint:
   name: Pause Music When Room is Empty
   description: Pause music if no one is detected in the room using motion and presence sensors.
   domain: automation
+  author: AutoHome
   input:
     motion_sensor:
       name: PIR Motion Sensor

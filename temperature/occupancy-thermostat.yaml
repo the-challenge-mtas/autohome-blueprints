@@ -2,6 +2,7 @@ blueprint:
   name: Thermostat Adjustment Based on Room Occupancy
   description: Adjust thermostat settings based on room occupancy detected by motion, presence, and door sensors.
   domain: automation
+  author: AutoHome
   input:
     motion_sensor:
       name: PIR Motion Sensor

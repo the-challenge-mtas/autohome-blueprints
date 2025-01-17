@@ -2,6 +2,7 @@ blueprint:
   name: Adaptive Lighting Based on Motion, Lux, and Presence
   description: Turn on lights based on motion, presence, and lux sensor input. Turn off lights after inactivity.
   domain: automation
+  author: AutoHome
   input:
     motion_sensor:
       name: PIR Motion Sensor
