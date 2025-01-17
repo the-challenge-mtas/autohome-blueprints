@@ -11,7 +11,7 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-          device_class: motion
+          device_class: occupancy
     presence_sensor:
       name: mmWave Presence Sensor
       description: The presence sensor to detect fine movements.
@@ -21,7 +21,7 @@ blueprint:
           device_class: presence
     lux_sensor:
       name: Lux Sensor
-      description: The lux sensor to measure light levels.
+      description: "The lux sensor to measure light levels. (Tip: Search for a sensor with "Illuminance" in the name.)"
       selector:
         entity:
           domain: sensor
@@ -33,24 +33,24 @@ blueprint:
           domain: light
     lux_threshold:
       name: Lux Threshold
-      description: The maximum lux level to consider it "dark."
-      default: 50
+      description: 'The maximum lux level to consider it "dark." (Tip: Place the sensor in it's permanent location and monitor the output value.)'
+      default: 3
       selector:
         number:
           min: 0
-          max: 1000
+          max: 500
           step: 1
           unit_of_measurement: lx
     inactivity_duration:
       name: Inactivity Duration
-      description: Time in minutes to wait before turning off the light.
-      default: 15
+      description: Time in seconds to wait before turning off the light.
+      default: 120
       selector:
         number:
           min: 1
-          max: 60
+          max: 1800
           step: 1
-          unit_of_measurement: min
+          unit_of_measurement: sec
 
 trigger:
   - platform: state

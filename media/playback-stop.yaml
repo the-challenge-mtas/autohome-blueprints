@@ -27,14 +27,14 @@ blueprint:
           domain: media_player
     inactivity_duration:
       name: Inactivity Duration
-      description: Time in minutes to wait after no one is detected before pausing music.
-      default: 5
+      description: Time in seconds to wait before turning off the light.
+      default: 120
       selector:
         number:
           min: 1
-          max: 30
+          max: 1800
           step: 1
-          unit_of_measurement: min
+          unit_of_measurement: sec
 
 trigger:
   - platform: state
