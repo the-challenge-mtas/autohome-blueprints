@@ -53,6 +53,25 @@ The blueprints are organized by the type of device they control:
 
 - Adjust the thermostat settings to maintain comfort when the room is occupied.
 
+---
+
+### Pause Music When Room is Empty
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fraw%2Frefs%2Fheads%2Fmaster%2Fmedia%2Fplayback-stop.yaml)
+
+**Trigger:**
+
+- Motion sensor detects no motion.
+- Presence sensor detects no presence.
+
+**Conditions:**
+
+- Specified duration of inactivity has passed.
+
+**Action:**
+
+- Pause the media player if no motion or presence is detected.
+
 ## Contributing
 
 We welcome contributions! If you have a blueprint that you would like to share, please submit a pull request.
