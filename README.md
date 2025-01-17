@@ -32,7 +32,25 @@ The blueprints are organized by the type of device they control:
 
 **Action:**
 
-- Turn on lights to a specific brightness level based on the lux reading.
+- Turn on lights to the previous brightness level when the lux reading is under the threshold.
+
+---
+
+### Lighting Based on Presence
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2FmmWave-presence-lighting.yaml)
+
+**Trigger:**
+
+- Presence detected by the mmWave sensor.
+
+**Conditions:**
+
+- No recent presence (e.g., after 15 minutes of inactivity, turn off the light).
+
+**Action:**
+
+- Turn on lights to the previous brightness level when presence is detected.
 
 ---
 
