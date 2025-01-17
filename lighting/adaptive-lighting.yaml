@@ -33,7 +33,7 @@ blueprint:
           domain: light
     lux_threshold:
       name: Lux Threshold
-      description: 'The maximum lux level to consider it "dark." (Tip: Place the sensor in it's permanent location and monitor the output value.)'
+      description: "The maximum lux level to consider it 'dark.' (Tip: Place the sensor in its permanent location and monitor the output value.)"
       default: 3
       selector:
         number:
