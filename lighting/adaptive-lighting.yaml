@@ -21,7 +21,7 @@ blueprint:
           device_class: presence
     lux_sensor:
       name: Lux Sensor
-      description: "The lux sensor to measure light levels. (Tip: Search for a sensor with "Illuminance" in the name.)"
+      description: 'The lux sensor to measure light levels. (Tip: Search for a sensor with "Illuminance" in the name.)'
       selector:
         entity:
           domain: sensor
