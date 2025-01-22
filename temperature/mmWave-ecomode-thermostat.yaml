@@ -1,0 +1,59 @@
+blueprint:
+  name: Lower Thermostat When No Presence Detected (mmWave)
+  description: Lower the thermostat when no presence is detected by a mmWave presence sensor.
+  domain: automation
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/temperature/mmWave-ecomode-thermostat.yaml
+  author: AutoHome
+  input:
+    presence_sensor:
+      name: mmWave Presence Sensor
+      description: The mmWave sensor to detect presence.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: presence
+    thermostat:
+      name: Thermostat to Control
+      description: The thermostat to adjust.
+      selector:
+        entity:
+          domain: climate
+    lower_temperature:
+      name: Lower Temperature
+      description: Temperature to set when no presence is detected.
+      default: 18
+      selector:
+        number:
+          min: 10
+          max: 30
+          step: 0.5
+          unit_of_measurement: °C
+    timeout_seconds:
+      name: Timeout Duration
+      description: Time in seconds before lowering the temperature after no presence has been detected.
+      default: 120
+      selector:
+        number:
+          min: 10
+          max: 1800
+          step: 1
+          unit_of_measurement: sec
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input presence_sensor
+    to: "off"
+    for:
+      seconds: !input timeout_seconds
+
+action:
+  - service: climate.set_temperature
+    target:
+      entity_id: !input thermostat
+    data:
+      temperature: !input lower_temperature

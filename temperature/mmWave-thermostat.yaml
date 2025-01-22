@@ -1,17 +1,10 @@
 blueprint:
   name: Thermostat Adjustment Based on Room Occupancy
-  description: Adjust thermostat settings based on room occupancy detected by motion, presence, and door sensors.
+  description: Adjust thermostat settings based on room occupancy, and by current room temperature.
   domain: automation
-  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/temperature/occupancy-thermostat.yaml
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/temperature/mmWave-thermostat.yaml
   author: AutoHome
   input:
-    motion_sensor:
-      name: PIR Motion Sensor
-      description: The motion sensor to detect occupancy.
-      selector:
-        entity:
-          domain: binary_sensor
-          device_class: occupancy
     presence_sensor:
       name: mmWave Presence Sensor
       description: The presence sensor to detect fine movements.
@@ -19,13 +12,6 @@ blueprint:
         entity:
           domain: binary_sensor
           device_class: presence
-    door_sensor:
-      name: Door Sensor
-      description: The door sensor to detect if the door is open or closed.
-      selector:
-        entity:
-          domain: binary_sensor
-          device_class: door
     thermostat:
       name: Thermostat to Control
       description: The thermostat to adjust.
@@ -43,13 +29,12 @@ blueprint:
           step: 0.5
           unit_of_measurement: °C
 
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
 trigger:
-  - platform: state
-    entity_id: !input door_sensor
-    to: "on"
-  - platform: state
-    entity_id: !input motion_sensor
-    to: "on"
   - platform: state
     entity_id: !input presence_sensor
     to: "on"
