@@ -99,13 +99,30 @@ The blueprints are organized by the type of device they control:
 
 ---
 
-### Pause Music When Room is Empty
+### Pause Music When Room is Empty (PIR Sensor)
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Fmedia%2Fplayback-stop.yaml)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Fmedia%2Fplayback-stop-pir.yaml)
 
 **Trigger:**
 
 - Motion sensor detects no motion.
+
+**Conditions:**
+
+- Specified duration of inactivity has passed.
+
+**Action:**
+
+- Pause the media player if no motion is detected.
+
+---
+
+### Pause Music When Room is Empty (mmWave Sensor)
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Fmedia%2Fplayback-stop-mmwave.yaml)
+
+**Trigger:**
+
 - Presence sensor detects no presence.
 
 **Conditions:**
@@ -114,7 +131,7 @@ The blueprints are organized by the type of device they control:
 
 **Action:**
 
-- Pause the media player if no motion or presence is detected.
+- Pause the media player if no presence is detected.
 
 ---
 
