@@ -1,8 +1,8 @@
 blueprint:
-  name: Adaptive Lighting Based on Motion, Lux, and Presence
-  description: Turn on lights based on motion, presence, and lux sensor input. Turn off lights after inactivity.
+  name: Adaptive Lighting Based on PIR Sensor
+  description: Turn on lights based on motion and lux sensor input from a PIR sensor. Turn off lights after inactivity.
   domain: automation
-  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/lighting/adaptive-lighting.yaml
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/lighting/adaptive-lighting-PIR-min-lux.yaml
   author: AutoHome
   input:
     motion_sensor:
@@ -12,13 +12,6 @@ blueprint:
         entity:
           domain: binary_sensor
           device_class: occupancy
-    presence_sensor:
-      name: mmWave Presence Sensor
-      description: The presence sensor to detect fine movements.
-      selector:
-        entity:
-          domain: binary_sensor
-          device_class: presence
     lux_sensor:
       name: Lux Sensor
       description: 'The lux sensor to measure light levels. (Tip: Search for a sensor with "Illuminance" in the name.)'
@@ -52,12 +45,14 @@ blueprint:
           step: 1
           unit_of_measurement: sec
 
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
 trigger:
   - platform: state
     entity_id: !input motion_sensor
-    to: "on"
-  - platform: state
-    entity_id: !input presence_sensor
     to: "on"
 
 condition:
@@ -74,12 +69,7 @@ action:
         entity_id: !input motion_sensor
         to: "off"
         for:
-          minutes: !input inactivity_duration
-      - platform: state
-        entity_id: !input presence_sensor
-        to: "off"
-        for:
-          minutes: !input inactivity_duration
+          seconds: !input inactivity_duration
   - service: light.turn_off
     target:
       entity_id: !input light

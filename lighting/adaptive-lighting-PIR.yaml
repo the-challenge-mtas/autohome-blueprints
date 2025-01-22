@@ -1,0 +1,54 @@
+blueprint:
+  name: Adaptive Lighting Based on PIR Sensor
+  description: Turn on lights based on motion input from a PIR sensor. Turn off lights after inactivity.
+  domain: automation
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/lighting/adaptive-lighting-PIR.yaml
+  author: AutoHome
+  input:
+    motion_sensor:
+      name: PIR Motion Sensor
+      description: The motion sensor to detect occupancy.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: occupancy
+    light:
+      name: Light to Control
+      description: The light to turn on/off.
+      selector:
+        entity:
+          domain: light
+    inactivity_duration:
+      name: Inactivity Duration
+      description: Time in seconds to wait before turning off the light.
+      default: 120
+      selector:
+        number:
+          min: 1
+          max: 1800
+          step: 1
+          unit_of_measurement: sec
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input motion_sensor
+    to: "on"
+
+action:
+  - service: light.turn_on
+    target:
+      entity_id: !input light
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input motion_sensor
+        to: "off"
+        for:
+          seconds: !input inactivity_duration
+  - service: light.turn_off
+    target:
+      entity_id: !input light

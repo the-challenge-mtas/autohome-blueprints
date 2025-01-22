@@ -16,29 +16,58 @@ The blueprints are organized by the type of device they control:
 
 ## Example Blueprints
 
-### Adaptive Lighting Based on Motion, Lux, and Presence
+### Adaptive Lighting Based on PIR Sensor
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2Fadaptive-lighting.yaml)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2Fadaptive-lighting-PIR.yaml)
 
 **Trigger:**
 
-- Motion detected by the PIR sensor or presence detected by the mmWave sensor.
-- Lux sensor reports low light levels.
-
-**Conditions:**
-
-- Time of day is evening or night.
-- No recent motion or presence activity (e.g., after 15 minutes of inactivity, turn off the light).
+- Motion detected by the PIR sensor.
 
 **Action:**
 
-- Turn on lights to the previous brightness level when the lux reading is under the threshold.
+- Turn on lights when motion is detected.
+- Turn off lights after a specified period of inactivity.
 
 ---
 
-### Lighting Based on Presence
+### Adaptive Lighting Based on PIR Sensor and Lux
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2FmmWave-presence-lighting.yaml)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2Fadaptive-lighting-PIR-min-lux.yaml)
+
+**Trigger:**
+
+- Motion detected by the PIR sensor.
+
+**Conditions:**
+
+- Lux sensor reports low light levels.
+
+**Action:**
+
+- Turn on lights when motion is detected and light levels are low.
+- Turn off lights after a specified period of inactivity.
+
+---
+
+### Adaptive Lighting Based on mmWave Sensor
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2Fadaptive-lighting-mmWave.yaml)
+
+**Trigger:**
+
+- Presence detected by the mmWave sensor.
+
+**Action:**
+
+- Turn on lights when presence is detected.
+- Turn off lights after a specified period of inactivity.
+
+---
+
+### Adaptive Lighting Based on mmWave Sensor and Lux
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2Fadaptive-lighting-mmWave-min-lux.yaml)
 
 **Trigger:**
 
@@ -46,40 +75,54 @@ The blueprints are organized by the type of device they control:
 
 **Conditions:**
 
-- No recent presence (e.g., after 15 minutes of inactivity, turn off the light).
+- Lux sensor reports low light levels.
 
 **Action:**
 
-- Turn on lights to the previous brightness level when presence is detected.
+- Turn on lights when presence is detected and light levels are low.
+- Turn off lights after a specified period of inactivity.
 
 ---
 
-### Thermostat Adjustment Based on Room Occupancy
+### Radar-activated Light
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Ftemperature%2Foccupancy-thermostat.yaml)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Flighting%2FmmWave-presence-lighting.yaml)
 
 **Trigger:**
 
-- Door contact sensor changes to "open" or "closed."
-- mmWave sensor detects presence.
-
-**Conditions:**
-
-- Temperature reading from the thermometer is below or above a set threshold.
+- Presence detected by the mmWave sensor.
 
 **Action:**
 
-- Adjust the thermostat settings to maintain comfort when the room is occupied.
+- Turn on lights when presence is detected.
+- Turn off lights after a specified period of inactivity.
 
 ---
 
-### Pause Music When Room is Empty
+### Pause Music When Room is Empty (PIR Sensor)
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Fmedia%2Fplayback-stop.yaml)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Fmedia%2Fplayback-stop-pir.yaml)
 
 **Trigger:**
 
 - Motion sensor detects no motion.
+
+**Conditions:**
+
+- Specified duration of inactivity has passed.
+
+**Action:**
+
+- Pause the media player if no motion is detected.
+
+---
+
+### Pause Music When Room is Empty (mmWave Sensor)
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Fmedia%2Fplayback-stop-mmwave.yaml)
+
+**Trigger:**
+
 - Presence sensor detects no presence.
 
 **Conditions:**
@@ -88,7 +131,85 @@ The blueprints are organized by the type of device they control:
 
 **Action:**
 
-- Pause the media player if no motion or presence is detected.
+- Pause the media player if no presence is detected.
+
+---
+
+### Lower Thermostat When Window Opened
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Ftemperature%2Fcontact-ecomode-thermostat.yaml)
+
+**Trigger:**
+
+- Window contact sensor detects the window is open.
+
+**Action:**
+
+- Lower the thermostat temperature when the window is open.
+
+---
+
+### Lower Thermostat When No Presence Detected (mmWave)
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Ftemperature%2FmmWave-ecomode-thermostat.yaml)
+
+**Trigger:**
+
+- No presence detected by the mmWave sensor.
+
+**Action:**
+
+- Lower the thermostat temperature when no presence is detected.
+
+---
+
+### Lower Thermostat When No Motion Detected (PIR)
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Ftemperature%2FPIR-ecomode-thermostat.yaml)
+
+**Trigger:**
+
+- No motion detected by the PIR sensor.
+
+**Action:**
+
+- Lower the thermostat temperature when no motion is detected.
+
+---
+
+### Thermostat Adjustment Based on PIR Motion Sensor
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Ftemperature%2FPIR-thermostat.yaml)
+
+**Trigger:**
+
+- Motion detected by the PIR sensor.
+
+**Conditions:**
+
+- Temperature is below the specified threshold.
+
+**Action:**
+
+- Adjust the thermostat to the specified temperature.
+
+---
+
+### Thermostat Adjustment Based on Room Occupancy
+
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fthe-challenge-mtas%2Fautohome-blueprints%2Fblob%2Fmaster%2Ftemperature%2FmmWave-thermostat.yaml)
+
+**Trigger:**
+
+- Presence detected by the mmWave sensor.
+
+**Conditions:**
+
+- Temperature is below the specified threshold.
+
+**Action:**
+
+- Adjust the thermostat to the specified temperature.
 
 ## Contributing
 

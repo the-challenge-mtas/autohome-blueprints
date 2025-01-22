@@ -1,17 +1,10 @@
 blueprint:
-  name: Pause Music When Room is Empty
-  description: Pause music if no one is detected in the room using motion and presence sensors.
+  name: Pause Music When Room is Empty (mmWave Sensor)
+  description: Pause music if no presence is detected in the room using an mmWave presence sensor.
   domain: automation
-  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/media/playback-stop.yaml
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/media/playback-stop-mmwave.yaml
   author: AutoHome
   input:
-    motion_sensor:
-      name: PIR Motion Sensor
-      description: The motion sensor to detect occupancy.
-      selector:
-        entity:
-          domain: binary_sensor
-          device_class: occupancy
     presence_sensor:
       name: mmWave Presence Sensor
       description: The presence sensor to detect fine movements.
@@ -27,7 +20,7 @@ blueprint:
           domain: media_player
     inactivity_duration:
       name: Inactivity Duration
-      description: Time in seconds to wait before turning off the light.
+      description: Time in seconds to wait before pausing the media.
       default: 120
       selector:
         number:
@@ -36,10 +29,12 @@ blueprint:
           step: 1
           unit_of_measurement: sec
 
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
 trigger:
-  - platform: state
-    entity_id: !input motion_sensor
-    to: "off"
   - platform: state
     entity_id: !input presence_sensor
     to: "off"
@@ -49,17 +44,14 @@ condition: []
 action:
   - wait_for_trigger:
       - platform: state
-        entity_id: !input motion_sensor
-        to: "on"
-      - platform: state
         entity_id: !input presence_sensor
         to: "on"
     timeout:
-      minutes: !input inactivity_duration
+      seconds: !input inactivity_duration
     continue_on_timeout: true
   - condition: template
     value_template: >
-      {{ not is_state('!input.motion_sensor', 'on') and not is_state('!input.presence_sensor', 'on') }}
+      {{ not is_state('!input.presence_sensor', 'on') }}
   - service: media_player.media_pause
     target:
       entity_id: !input media_player

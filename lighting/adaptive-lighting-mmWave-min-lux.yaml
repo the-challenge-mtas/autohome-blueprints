@@ -1,0 +1,75 @@
+blueprint:
+  name: Adaptive Lighting Based on Lux and Presence
+  description: Turn on lights based on presence and lux sensor input. Turn off lights after inactivity.
+  domain: automation
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/lighting/adaptive-lighting-mmWave-min-lux.yaml
+  author: AutoHome
+  input:
+    presence_sensor:
+      name: mmWave Presence Sensor
+      description: The presence sensor to detect fine movements.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: presence
+    lux_sensor:
+      name: Lux Sensor
+      description: 'The lux sensor to measure light levels. (Tip: Search for a sensor with "Illuminance" in the name.)'
+      selector:
+        entity:
+          domain: sensor
+    light:
+      name: Light to Control
+      description: The light to turn on/off.
+      selector:
+        entity:
+          domain: light
+    lux_threshold:
+      name: Lux Threshold
+      description: "The maximum lux level to consider it 'dark.' (Tip: Place the sensor in its permanent location and monitor the output value.)"
+      default: 3
+      selector:
+        number:
+          min: 0
+          max: 500
+          step: 1
+          unit_of_measurement: lx
+    inactivity_duration:
+      name: Inactivity Duration
+      description: Time in seconds to wait before turning off the light.
+      default: 120
+      selector:
+        number:
+          min: 1
+          max: 1800
+          step: 1
+          unit_of_measurement: sec
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input presence_sensor
+    to: "on"
+
+condition:
+  - condition: numeric_state
+    entity_id: !input lux_sensor
+    below: !input lux_threshold
+
+action:
+  - service: light.turn_on
+    target:
+      entity_id: !input light
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input presence_sensor
+        to: "off"
+        for:
+          minutes: !input inactivity_duration
+  - service: light.turn_off
+    target:
+      entity_id: !input light

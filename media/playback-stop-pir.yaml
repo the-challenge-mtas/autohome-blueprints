@@ -1,0 +1,57 @@
+blueprint:
+  name: Pause Music When Room is Empty (PIR Sensor)
+  description: Pause music if no motion is detected in the room using a PIR motion sensor.
+  domain: automation
+  source_url: https://github.com/the-challenge-mtas/autohome-blueprints/blob/master/media/playback-stop-pir.yaml
+  author: AutoHome
+  input:
+    motion_sensor:
+      name: PIR Motion Sensor
+      description: The motion sensor to detect occupancy.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: occupancy
+    media_player:
+      name: Media Player
+      description: The media player to control.
+      selector:
+        entity:
+          domain: media_player
+    inactivity_duration:
+      name: Inactivity Duration
+      description: Time in seconds to wait before pausing the media.
+      default: 120
+      selector:
+        number:
+          min: 1
+          max: 1800
+          step: 1
+          unit_of_measurement: sec
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input motion_sensor
+    to: "off"
+
+condition: []
+
+action:
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input motion_sensor
+        to: "on"
+    timeout:
+      seconds: !input inactivity_duration
+    continue_on_timeout: true
+  - condition: template
+    value_template: >
+      {{ not is_state('!input.motion_sensor', 'on') }}
+  - service: media_player.media_pause
+    target:
+      entity_id: !input media_player
